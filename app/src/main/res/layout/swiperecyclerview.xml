@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/contentview"
+    >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:overScrollMode="never"
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <!--<TextView
+        android:id="@+id/loading_text"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/swiperefreshlayout"
+        android:gravity="center"
+        android:text="加载更多"
+        android:textColor="#000000"
+        android:background="#EEEEE0"
+        />-->
+
+
+</RelativeLayout>
