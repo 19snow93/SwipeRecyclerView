@@ -204,6 +204,8 @@ public class SwipeRecyclerView extends FrameLayout{
                     linearView.setTranslationY(curTransY);
                     if(Math.abs(curTransY) == Math.abs(footerHeight)){
                         isLoadNext = true;
+                    }else {
+                        isLoadNext = false;
                     }
                 }
                 mLastMotionY = y;
@@ -219,7 +221,11 @@ public class SwipeRecyclerView extends FrameLayout{
                     }else {
                         hideTranslationY();
                         isLoading = false;
+                        isLoadNext = false;
                     }
+                }else {
+                    hideTranslationY();
+                    isLoading = false;
                 }
                 return true;
 
@@ -233,6 +239,7 @@ public class SwipeRecyclerView extends FrameLayout{
             return;
         }
         isLoading = false;
+        isLoadNext = false;
         hideTranslationY();
     }
 

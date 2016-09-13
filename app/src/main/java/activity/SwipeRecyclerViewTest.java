@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +55,14 @@ public class SwipeRecyclerViewTest extends Activity{
                 swipeRecyclerView.onLoadFinish();
             }
         });
+        View view = LayoutInflater.from(this).inflate(R.layout.content_headview,null);
+        recycleViewAdapter.setHeaderView(view);
     }
 
 
 
     private void initData() {
-        for(int i = 0;i < 10;i++){
+        for(int i = 0;i < 8;i++){
             String a = i + "";
             list.add(a);
         }

@@ -12,6 +12,20 @@ import android.view.View;
  */
 public class RecyclerViewUtil {
 
+    public static int getHeaderHeight(RecyclerView recyclerView){
+        int headerCildHeight = 0;
+
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int firstHeaderPos = layoutManager.findFirstCompletelyVisibleItemPosition();
+        View headerCild = layoutManager.findViewByPosition(firstHeaderPos);
+
+        if(headerCild != null){
+            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) headerCild.getLayoutParams();
+            headerCildHeight = headerCild.getHeight() + params.topMargin + params.bottomMargin;
+        }
+        return  headerCildHeight;
+    }
+
     public static int getItemHeight(RecyclerView recyclerView) {
         int itemHeight = 0;
         View child = null;
@@ -22,7 +36,8 @@ public class RecyclerViewUtil {
         } else {
             LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
             int firstPos = layoutManager.findFirstCompletelyVisibleItemPosition();
-            child = layoutManager.findViewByPosition(firstPos);
+            int lastPos = layoutManager.findLastCompletelyVisibleItemPosition();
+            child = layoutManager.findViewByPosition(lastPos);
         }
 
         if (child != null) {
@@ -65,7 +80,7 @@ public class RecyclerViewUtil {
             int itemHeght = getItemHeight(recyclerView);
             int firstItemBottom = layoutManager.getDecoratedBottom(child);
 
-            Log.e("RecyclerViewUtil", "firstPos:" + firstPos + "  itemHeight:" + itemHeght + "  top:" + firstItemBottom);
+        //    Log.e("RecyclerViewUtil", "firstPos:" + firstPos + "  itemHeight:" + itemHeght + "  top:" + firstItemBottom);
             scrollY = itemHeght * (line + 1) - firstItemBottom;
 
             int firstComPos = layoutManager.findFirstCompletelyVisibleItemPosition();
@@ -84,13 +99,13 @@ public class RecyclerViewUtil {
         int spanCount = layoutManager.getSpanCount();
         View child = layoutManager.findViewByPosition(layoutManager.findFirstVisibleItemPosition());
         if (child != null) {
-            int itemHeght = getItemHeight(recyclerView);
+            int itemHeight = getItemHeight(recyclerView);
             int childCount = layoutManager.getItemCount();
             int line = childCount / spanCount;
             if (childCount % spanCount != 0) {
                 line++;
             }
-            totalHeight = line * itemHeght;
+            totalHeight = line * itemHeight;
         }
 
         return totalHeight;
@@ -113,12 +128,16 @@ public class RecyclerViewUtil {
     public static int getLinearScrollY(RecyclerView recyclerView) {
         int scrollY = 0;
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int headerCildHeight = getHeaderHeight(recyclerView);
         int firstPos = layoutManager.findFirstVisibleItemPosition();
         View child = layoutManager.findViewByPosition(firstPos);
+        int itemHeight = getItemHeight(recyclerView);
+        int firstItemBottom = layoutManager.getDecoratedBottom(child);
         if (child != null) {
-            int itemHeght = getItemHeight(recyclerView);
-            int firstItemBottom = layoutManager.getDecoratedBottom(child);
-            scrollY = itemHeght * (firstPos + 1) - firstItemBottom;
+            scrollY = headerCildHeight + itemHeight * firstPos - firstItemBottom;
+            if(scrollY < 0){
+                scrollY = 0;
+            }
         }
 
         return scrollY;
@@ -129,10 +148,12 @@ public class RecyclerViewUtil {
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         View child = layoutManager.findViewByPosition(layoutManager.findFirstVisibleItemPosition());
+        int headerCildHeight = getHeaderHeight(recyclerView);
+
         if (child != null) {
-            int itemHeght = getItemHeight(recyclerView);
+            int itemHeight = getItemHeight(recyclerView);
             int childCount = layoutManager.getItemCount();
-            totalHeight = childCount * itemHeght;
+            totalHeight = headerCildHeight + (childCount - 1) * itemHeight;
         }
 
         return totalHeight;
@@ -143,6 +164,8 @@ public class RecyclerViewUtil {
         int scrollY = getLinearScrollY(recyclerView);
         int totalHeight = getLinearTotalHeight(recyclerView);
         int height = recyclerView.getHeight();
+
+    //    Log.e("height","scrollY  " + scrollY + "  totalHeight  " + totalHeight + "  recyclerHeight  " + height);
 
         if (scrollY + height < totalHeight) {
             isBottom = false;
