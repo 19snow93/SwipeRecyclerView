@@ -125,15 +125,15 @@ public class RecyclerViewUtil {
         return isBottom;
     }
 
-    public static int getLinearScrollY(RecyclerView recyclerView) {
+        public static int getLinearScrollY(RecyclerView recyclerView) {
         int scrollY = 0;
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         int headerCildHeight = getHeaderHeight(recyclerView);
         int firstPos = layoutManager.findFirstVisibleItemPosition();
         View child = layoutManager.findViewByPosition(firstPos);
         int itemHeight = getItemHeight(recyclerView);
-        int firstItemBottom = layoutManager.getDecoratedBottom(child);
         if (child != null) {
+            int firstItemBottom = layoutManager.getDecoratedBottom(child);
             scrollY = headerCildHeight + itemHeight * firstPos - firstItemBottom;
             if(scrollY < 0){
                 scrollY = 0;
