@@ -156,6 +156,14 @@ public class RecyclerViewUtil {
             totalHeight = headerCildHeight + (childCount - 1) * itemHeight;
         }
 
+        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+        int visibleItemCount = layoutManager.getChildCount();
+        int totalItemCount = layoutManager.getItemCount();
+
+//        Log.e("onScrollStateChanged", "visibleItemCount " + visibleItemCount);
+//        Log.e("onScrollStateChanged", "lastVisibleItemPosition " + lastVisibleItemPosition);
+//        Log.e("onScrollStateChanged", "totalItemCount " + totalItemCount);
+
         return totalHeight;
     }
 
@@ -305,6 +313,7 @@ public class RecyclerViewUtil {
         int totalWidth = 0;
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        layoutManager.canScrollVertically();
         View child = layoutManager.findViewByPosition(layoutManager.findFirstVisibleItemPosition());
         if (child != null) {
             int itemWidth = getItemWidth(recyclerView);
@@ -392,5 +401,36 @@ public class RecyclerViewUtil {
         }
 
         return true;
+    }
+
+    public static boolean isVisBottom(RecyclerView recyclerView){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+        int visibleItemCount = layoutManager.getChildCount();
+        int totalItemCount = layoutManager.getItemCount();
+        int lastCompletelyVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
+        int state = recyclerView.getScrollState();
+        Log.e("onScrollStateChanged", "visibleItemCount" + visibleItemCount);
+        Log.e("onScrollStateChanged", "lastVisibleItemPosition" + lastVisibleItemPosition);
+        Log.e("onScrollStateChanged", "totalItemCount" + totalItemCount);
+        Log.e("onScrollStateChanged", "lastCompletelyVisibleItemPosition" + lastCompletelyVisibleItemPosition);
+        if(visibleItemCount > 0 && lastVisibleItemPosition == totalItemCount - 1 && state == recyclerView.SCROLL_STATE_IDLE){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+
+    public static boolean isSlideToBottom(RecyclerView recyclerView) {
+        if (recyclerView == null) return false;
+        Log.e("onScrollStateChanged", "computeVerticalScrollExtent " + recyclerView.computeVerticalScrollExtent());
+        Log.e("onScrollStateChanged", "computeVerticalScrollOffset " + recyclerView.computeVerticalScrollOffset());
+        Log.e("onScrollStateChanged", "computeVerticalScrollRange " + recyclerView.computeVerticalScrollRange());
+
+        if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange())
+            return true;
+        return false;
     }
 }

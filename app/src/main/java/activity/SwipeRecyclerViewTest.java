@@ -37,20 +37,20 @@ public class SwipeRecyclerViewTest extends Activity{
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
-    //    initData();
+        initData();
         recycleViewAdapter = new RecycleViewAdapter(this,list);
         recyclerView.setAdapter(recycleViewAdapter);
         swipeRecyclerView.setOnSwipeRecyclerViewListener(new SwipeRecyclerView.OnSwipeRecyclerViewListener() {
             @Override
             public void onRefresh() {
                 list.clear();
-            //    initData();
+                initData();
                 recycleViewAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLoadNext() {
-            //    initData();
+                initData();
                 recycleViewAdapter.notifyDataSetChanged();
                 swipeRecyclerView.onLoadFinish();
             }
@@ -62,7 +62,7 @@ public class SwipeRecyclerViewTest extends Activity{
 
 
     private void initData() {
-        for(int i = 0;i < 8;i++){
+        for(int i = 0;i < 1;i++){
             String a = i + "";
             list.add(a);
         }

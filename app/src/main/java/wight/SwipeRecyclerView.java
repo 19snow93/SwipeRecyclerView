@@ -176,11 +176,12 @@ public class SwipeRecyclerView extends FrameLayout{
                 }
                 break;
         }
-        return super.onInterceptTouchEvent(ev);
-    }
+        return super.onInterceptTouchEvent(ev);    }
+
 
     private boolean isRefreshViewScroll(int deltaY) {
-        if(deltaY < 0 && RecyclerViewUtil.isBottom(recyclerView) && curTransY <= footerHeight && !isLoading && !isCancelLoadNext){
+        if(deltaY < 0 && !recyclerView.canScrollVertically(1) && curTransY <= footerHeight && !isLoading && !isCancelLoadNext){
+    //    if(deltaY < 0 && RecyclerViewUtil.isVisBottom(recyclerView) && curTransY <= footerHeight && !isLoading && !isCancelLoadNext){
             mPullState = PULL_UP_STATE;
             isLoading = true;
             return true;
